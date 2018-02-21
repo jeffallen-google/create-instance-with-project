@@ -1,0 +1,27 @@
+resources:
+- name: {{ properties['name'] }} 
+  type: gcp-types/compute-v1:instances
+  properties:
+    project: {{ properties['project-id'] }}
+    zone: {{ properties['zone'] }}
+    machineType: zones/{{ properties['zone'] }}/machineTypes/{{ properties['machineType'] }}
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        diskName: {{ properties['name'] }}
+        sourceImage: {{ properties['image'] }}
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/{{ properties['project-id'] }}/global/networks/default
+      {% if properties['hasExternalIp'] %}
+      accessConfigs:
+      - name: external-nat
+        type: ONE_TO_ONE_NAT
+      {% endif %}
+  metadata:
+    dependsOn:
+    - {{ properties['project-id'] }}
+    - {{ properties['project-id'] }}-compute.googleapis.com
+

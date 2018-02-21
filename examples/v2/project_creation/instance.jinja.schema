@@ -1,0 +1,52 @@
+# Copyright 2017 Google Inc. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+info:
+  title: Instance
+  author: Google, Inc.
+  description: >
+    Deploys an example instance.
+
+required:
+- name
+- project-id
+- zone
+
+properties:
+  name:
+    description: >
+      The name of the instance.
+    type: string
+    pattern: ^[a-z]([-a-z0-9]{0,61}[a-z0-9])?$
+  project-id:
+    description: >
+      The unique ID of the project to create.  It must be 6 to 30 lowercase letters, digits, or hyphens. It must start with a letter. Trailing hyphens are prohibited.
+    type: string
+    pattern: ^[a-z][-a-z0-9]{4,28}[a-z0-9]$
+  zone:
+    type: string
+    description: Zone to run the instance in.
+  machineType:
+    type: string
+    descripton: Type of GCE instance to use.
+    default: f1-micro
+  image:
+    type: string
+    description: Image to run on the VMs.
+    default: projects/debian-cloud/global/images/debian-9-stretch-v20180206
+  hasExternalIp:
+    type: boolean
+    description: True if the instances created should have an external ip
+    default: True
+

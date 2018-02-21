@@ -1,0 +1,49 @@
+resources:
+- name: test-instance
+  type: instance.jinja
+  properties:
+    name: test-instance
+    zone: {{ properties['zone'] }}
+    project-id: {{ properties['project-id'] }}
+# below copied from config.yaml
+- name: {{ properties['project-id'] }}
+  type: project.py
+  properties:
+    # Change this to your organization ID.
+    organization-id: '{{ properties['organization-id'] }}'
+    # Change the following to your organization's billing account
+    billing-account-name: {{ properties['billing-account-name'] }}
+    # The apis to enable in the new project.
+    # To see the possible APIs, use gcloud CLI: gcloud service-management list
+    apis:
+    - compute.googleapis.com
+    - deploymentmanager.googleapis.com
+    - pubsub.googleapis.com
+    - storage-component.googleapis.com
+    - monitoring.googleapis.com
+    - logging.googleapis.com
+    # The service accounts you want to create in the project
+    service-accounts:
+    - my-service-account-1
+    - my-service-account-2
+    bucket-export-settings:
+      create-bucket: true
+      # If using an already existing bucket, specify this
+      # bucket: <my bucket name>
+    # Makes the service account that Deployment Manager would use
+    # in the generated project an admin
+    set-dm-service-account-as-owner: true
+#    # IAM policy on the new project
+#    iam-policy:
+#      bindings:
+#      - role: roles/owner
+#        members:
+#        # NOTE: The DM service account that is creating this project will
+#        # automatically be added as an owner.
+#        # Add any accounts you want to have access
+#        - serviceAccount:98765432111@cloudservices.gserviceaccount.com
+#        - serviceAccount:98765432100@cloudservices.gserviceaccount.com
+#      - role: roles/viewer
+#        members:
+#        - user:iamtester@deployment-manager.net
+
